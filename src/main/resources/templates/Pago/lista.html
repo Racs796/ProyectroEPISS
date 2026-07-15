@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pagos</title>
+    <style>
+        table{
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td{
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th{
+            background-color: #f2f2f2;
+        }
+        a{
+            text-decoration: none;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Lista de Pagos</h2>
+
+<a th:href="@{/pago/nuevo}">Nuevo Pago</a>
+
+<br><br>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Monto</th>
+        <th>Forma de Pago</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="pago : ${listaPagos}">
+        <td th:text="${pago.id}"></td>
+        <td th:text="${pago.monto}"></td>
+        <td th:text="${pago.formaPago}"></td>
+        <td th:text="${pago.fechaPago}"></

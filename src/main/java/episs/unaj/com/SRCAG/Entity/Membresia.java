@@ -5,7 +5,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "membresia") // En singular y minúsculas
-public class Membresia {
+public class
+Membresia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
