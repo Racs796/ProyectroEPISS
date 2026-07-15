@@ -49,4 +49,9 @@ public class PagoController {
         pagoService.borrarPago(id);
         return "redirect:/pago/lista";
     }
+    @GetMapping("/ver/{id}")
+    public String verPago(@PathVariable Long id, Model model) {
+        model.addAttribute("pago", pagoService.buscarPorId(id));
+        return "ver";
+    }
 }
