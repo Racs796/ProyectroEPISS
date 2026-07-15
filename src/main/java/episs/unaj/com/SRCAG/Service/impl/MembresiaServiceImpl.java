@@ -9,33 +9,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-    @Service
+@Service
 public class MembresiaServiceImpl implements MembresiaService {
 
     @Autowired
-    private MembresiaRepository membresiaRepository;
+    private MembresiaRepository membresiaRepository; // Inyección del repositorio clásico
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Membresia> obtenerTodasLasMembresia() {
+    @Transactional(readOnly = true) // Lectura de datos (estilo del profesor)
+    public List<Membresia> listarTodas() {
         return membresiaRepository.findAll();
     }
 
     @Override
-    @Transactional
-    public Membresia guardarMembresia(Membresia membresia) {
+    @Transactional // Escritura de datos
+    public Membresia guardar(Membresia membresia) {
         return membresiaRepository.save(membresia);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Membresia buscarPorId(Long id) {
-        return membresiaRepository.findById(id).orElse(null);
+    public Membresia obtenerPorId(Long id) {
+        return membresiaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Membresía no encontrada con ID: " + id));
     }
 
     @Override
     @Transactional
-    public void borrarMembresia(Long id) {
+    public void eliminar(Long id) {
+        if (!membresiaRepository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar. Membresía no encontrada con ID: " + id);
+        }
         membresiaRepository.deleteById(id);
     }
 }

@@ -1,7 +1,6 @@
 package episs.unaj.com.SRCAG.Controller;
 
 import episs.unaj.com.SRCAG.Entity.Membresia;
-import episs.unaj.com.SRCAG.Entity.Persona;
 import episs.unaj.com.SRCAG.Service.MembresiaService;
 import episs.unaj.com.SRCAG.Service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
 @Controller
-@RequestMapping("/membresias") // Usamos el plural siguiendo el estilo de su /productos
+@RequestMapping("/membresia")
 public class MembresiaController {
 
     @Autowired
@@ -23,68 +20,51 @@ public class MembresiaController {
 
     // 1. Listar todas las membresías
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("membresias", membresiaService.obtenerTodasLasMembresias());
-        return "membresia/index";
+    public String listarMembresias(Model model) {
+        model.addAttribute("titulo", "Listado de Membresías");
+        model.addAttribute("membresias", membresiaService.listarTodas()); // <-- OK
+        return "membresia/listar";
     }
 
-    // 2. Mostrar formulario para crear nueva membresía (Envia la lista de socios)
+    // 2. Mostrar formulario para registrar nueva Membresía
     @GetMapping("/nuevo")
-    public String mostrarFormularioCrear(Model model) {
-        model.addAttribute("membresia", new Membresia());
-        model.addAttribute("personas", personaService.obtenerTodasLasPersonas()); // Para asignar el socio
-        return "membresia/form";
+    public String mostrarFormularioNuevo(Model model) {
+        Membresia membresia = new Membresia();
+        model.addAttribute("titulo", "Registrar Nueva Membresía");
+        model.addAttribute("membresia", membresia);
+        model.addAttribute("personas", personaService.listarTodas());
+        return "membresia/formulario";
     }
 
-    // 3. Procesar el guardado asignando la Persona vía @RequestParam
-    @PostMapping
-    public String guardar(@ModelAttribute Membresia membresia,
-                          @RequestParam Long personaId) {
-        // Buscamos a la persona/socio y la vinculamos
-        Persona persona = personaService.obtainerPersonaPorId(personaId);
-        membresia.setPersona(persona);
+    // 3. Guardar o actualizar la Membresía
+    @PostMapping("/guardar")
+    public String guardarMembresia(@ModelAttribute Membresia membresia) {
+        membresiaService.guardar(membresia); // <-- OK
+        return "redirect:/membresia";
+    }
 
-        // Lógica automática de estado según las fechas
-        if (membresia.getFechaFin() != null && membresia.getFechaFin().isBefore(LocalDate.now())) {
-            membresia.setEstado("Vencido");
-        } else {
-            membresia.setEstado("Activo");
+    // 4. Mostrar formulario para editar
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        try {
+            Membresia membresia = membresiaService.obtenerPorId(id); // <-- OK
+            model.addAttribute("titulo", "Editar Membresía");
+            model.addAttribute("membresia", membresia);
+            model.addAttribute("personas", personaService.listarTodas());
+            return "membresia/formulario";
+        } catch (RuntimeException e) {
+            return "redirect:/membresia";
         }
-
-        membresiaService.guardarMembresia(membresia);
-        return "redirect:/membresias";
     }
 
-    // 4. Mostrar formulario para editar membresía existente
-    @GetMapping("/{id}/editar")
-    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        model.addAttribute("membresia", membresiaService.obtenerMembresiaPorId(id));
-        model.addAttribute("personas", personaService.obtenerTodasLasPersonas());
-        return "membresia/form";
-    }
-
-    // 5. Procesar la actualización asignando la Persona vía @RequestParam
-    @PostMapping("/{id}")
-    public String actualizar(@PathVariable Long id,
-                             @ModelAttribute Membresia membresia,
-                             @RequestParam Long personaId) {
-        Persona persona = personaService.obtainerPersonaPorId(personaId);
-        membresia.setPersona(persona);
-
-        if (membresia.getFechaFin() != null && membresia.getFechaFin().isBefore(LocalDate.now())) {
-            membresia.setEstado("Vencido");
-        } else {
-            membresia.setEstado("Activo");
+    // 5. Eliminar una Membresía
+    @GetMapping("/eliminar/{id}")
+    public String eliminarMembresia(@PathVariable("id") Long id) {
+        try {
+            membresiaService.eliminar(id); // <-- OK
+        } catch (RuntimeException e) {
+            // Manejo silencioso
         }
-
-        membresiaService.actualizarMembresia(id, membresia);
-        return "redirect:/membresias";
-    }
-
-    // 6. Eliminar membresía
-    @GetMapping("/{id}/eliminar")
-    public String eliminar(@PathVariable Long id) {
-        membresiaService.eliminarMembresia(id);
-        return "redirect:/membresias";
+        return "redirect:/membresia";
     }
 }

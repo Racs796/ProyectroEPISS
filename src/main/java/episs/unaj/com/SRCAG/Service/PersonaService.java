@@ -1,6 +1,6 @@
-package episs.unaj.com.SRCAG.service;
+package episs.unaj.com.SRCAG.Service; // <-- Asegúrate de que coincida con tus mayúsculas
 
-import episs.unaj.com.SRCAG.entity.Persona;
+import episs.unaj.com.SRCAG.Entity.Persona;
 import java.util.List;
 
 public interface PersonaService {
@@ -8,5 +8,4 @@ public interface PersonaService {
     Persona guardar(Persona persona);
     Persona obtenerPorId(Long id);
     void eliminar(Long id);
-    Persona obtenerPorDni(String dni); // Búsqueda personalizada útil para el gimnasio
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Registrar Membresía</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0" th:text="${titulo}">Registrar Membresía</h3>
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/membresia/guardar}" th:object="${membresia}" method="post">
+
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="mb-3">
+                            <label for="persona" class="form-label fw-bold">Asociar Cliente *</label>
+                            <select th:field="*{persona}" id="persona" class="form-select" required>
+                                <option value="" disabled selected>-- Seleccione un cliente --</option>
+                                <option th:each="pers : ${personas}"
+                                        th:value="${pers.id}"
+                                        th:text="${pers.nombre + ' ' + pers.apellido + ' (DNI: ' + pers.dni + ')'}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tipo" class="form-label fw-bold">Tipo de Membresía</label>
+                                <select th:field="*{tipo}" id="tipo" class="form-select" required>
+                                    <option value="Semanal">Semanal</option>
+                                    <option value="Mensual" selected>Mensual</option>
+                                    <option value="Trimestral">Trimestral</option>
+                                    <option value="Anual">Anual</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="precio" class="form-label fw-bold">Precio (S/)</label>
+                                <input type="number" step="0.1" th:field="*{precio}" id="precio" class="form-select" placeholder="0.00" required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaInicio" class="form-label fw-bold">Fecha de Inicio</label>
+                                <input type="date" th:field="*{fechaInicio}" id="fechaInicio" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaFin" class="form-label fw-bold">Fecha de Vencimiento</label>
+                                <input type="date" th:field="*{fechaFin}" id="fechaFin" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-4 col-md-6">
+                            <label for="estado" class="form-label fw-bold">Estado</label>
+                            <select th:field="*{estado}" id="estado" class="form-select" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Vencido">Vencido</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/membresia}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Membresía</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
