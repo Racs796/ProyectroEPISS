@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ver Pago</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f4f4;
+            margin:0;
+            padding:30px;
+        }
+
+        .container{
+            width:600px;
+            margin:auto;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        h2{
+            text-align:center;
+        }
+
+        p{
+            font-size:18px;
+        }
+
+        strong{
+            color:#007bff;
+        }
+
+        a{
+            display:inline-block;
+            margin-top:20px;
+            padding:10px 20px;
+            background:#007bff;
+            color:white;
+            text-decoration:none;
+            border-radius:5px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="container">
+
+    <h2>Detalle del Pago</h2>
+
+    <p><strong>ID:</strong> <span th:text="${pago.id}"></span></p>
+
+    <p><strong>Membresía:</strong> <span th:text="${pago.membresia.tipo}"></span></p>
+
+    <p><strong>Monto:</strong> S/ <span th:text="${pago.monto}"></span></p>
+
+    <p><strong>Forma de Pago:</strong> <span th:text="${pago.formaPago}"></span></p>
+
+    <p><strong>Fecha:</strong> <span th:text="${pago.fechaPago}"></span></p>
+
+    <p><strong>Estado:</strong> <span th:text="${pago.estado}"></span></p>
+
+    <p><strong>Descripción:</strong> <span th:text="${pago.descripcion}"></span></p>
+
+    <a th:href="@{/pago/lista}">Volver</a>
+
+</div>
 
 </body>
 </html>

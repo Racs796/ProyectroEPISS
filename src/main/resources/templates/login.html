@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login - Gym</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial, sans-serif;
+            background:#f0f2f5;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .login-box{
+            width:350px;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,.2);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            width:100%;
+            padding:10px;
+            background:#007bff;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+    </style>
 </head>
+
 <body>
+
+<div class="login-box">
+
+    <h2>Iniciar Sesión</h2>
+
+    <form th:action="@{/login}" method="post">
+
+        <label>Usuario</label>
+        <input type="text" name="username" placeholder="Ingrese su usuario" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="password" placeholder="Ingrese su contraseña" required>
+
+        <button type="submit">Ingresar</button>
+
+    </form>
+
+</div>
 
 </body>
 </html>

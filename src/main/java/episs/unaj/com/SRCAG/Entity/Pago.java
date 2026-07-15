@@ -21,6 +21,10 @@ public class Pago {
 
     private String descripcion;
 
+    @ManyToOne
+    @JoinColumn(name = "membresia_id", nullable = false)
+    private Membresia membresia;
+
     public Pago() {
     }
 
@@ -70,5 +74,13 @@ public class Pago {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Membresia getMembresia() {
+        return membresia;
+    }
+
+    public void setMembresia(Membresia membresia) {
+        this.membresia = membresia;
     }
 }

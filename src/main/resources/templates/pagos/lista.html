@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pagos</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f4f4;
+            margin:20px;
+        }
+
+        h2{
+            text-align:center;
+        }
+
+        a{
+            text-decoration:none;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+            background:white;
+        }
+
+        table, th, td{
+            border:1px solid #ccc;
+        }
+
+        th, td{
+            padding:10px;
+            text-align:center;
+        }
+
+        th{
+            background:#007bff;
+            color:white;
+        }
+
+        .nuevo{
+            background:green;
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+        }
+
+        .ver{
+            color:blue;
+        }
+
+        .editar{
+            color:orange;
+        }
+
+        .eliminar{
+            color:red;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>LISTA DE PAGOS</h2>
+
+<a class="nuevo" th:href="@{/pago/nuevo}">
+    Nuevo Pago
+</a>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Membresía</th>
+        <th>Monto</th>
+        <th>Forma de Pago</th>
+        <th>Fecha Pago</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="pago : ${listaPagos}">
+
+        <td th:text="${pago.id}"></td>
+
+        <td th:text="${pago.membresia.tipo}"></td>
+
+        <td th:text="${pago.monto}"></td>
+
+        <td th:text="${pago.formaPago}"></td>
+
+        <td th:text="${pago.fechaPago}"></td>
+
+        <td th:text="${pago.estado}"></td>
+
+        <td th:text="${pago.descripcion}"></td>
+
+        <td>
+
+            <a class="ver"
+               th:href="@{/pago/ver/{id}(id=${pago.id})}">
+                Ver
+            </a>
+
+            |
+
+            <a class="editar"
+               th:href="@{/pago/editar/{id}(id=${pago.id})}">
+                Editar
+            </a>
+
+            |
+
+            <a class="eliminar"
+               th:href="@{/pago/eliminar/{id}(id=${pago.id})}"
+               onclick="return confirm('¿Desea eliminar este pago?')">
+                Eliminar
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>
