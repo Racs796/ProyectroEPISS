@@ -17,33 +17,29 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Persona> obtenerTodasLasPersonas() {
+    public List<Persona> listarTodas() {
         return personaRepository.findAll();
     }
 
     @Override
     @Transactional
-    public Persona guardarPersona(Persona persona) {
+    public Persona guardar(Persona persona) {
         return personaRepository.save(persona);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Persona obtenerPersonaPorId(Long id) {
-        // Mantenemos el uso de getReferenceById tal como lo hace el profesor
-        return personaRepository.getReferenceById(id);
+    public Persona obtenerPorId(Long id) {
+        return personaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada con el ID: " + id));
     }
 
     @Override
     @Transactional
-    public Persona actualizarPersona(Long id, Persona persona) {
-        persona.setId(id);
-        return personaRepository.save(persona);
-    }
-
-    @Override
-    @Transactional
-    public void eliminarPersona(Long id) {
+    public void eliminar(Long id) {
+        if (!personaRepository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar. Persona no encontrada con el ID: " + id);
+        }
         personaRepository.deleteById(id);
     }
 }

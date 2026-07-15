@@ -4,8 +4,8 @@ import episs.unaj.com.SRCAG.Entity.Membresia;
 import java.util.List;
 
 public interface MembresiaService {
-    List<Membresia> obtenerTodasLasMembresia();
-    Membresia guardarMembresia(Membresia membresia);
-    Membresia buscarPorId(Long id);
-    void borrarMembresia(Long id);
+    List<Membresia> listarTodas();            // <-- Cambiado para coincidir con membresiaService.listarTodas()
+    Membresia guardar(Membresia membresia);   // <-- Simplificado a guardar
+    Membresia obtenerPorId(Long id);         // <-- Simplificado a obtenerPorId
+    void eliminar(Long id);                  // <-- Simplificado a eliminar
 }

@@ -3,7 +3,7 @@ package episs.unaj.com.SRCAG.Entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios") // Nombre de la tabla en base de datos
 public class Usuario {
 
     @Id
@@ -14,9 +14,10 @@ public class Usuario {
     private String username;
 
     @Column(nullable = false)
-    private String password;   // Se guarda encriptada (BCrypt) siguiendo su estándar
+    private String password; // Almacenará la contraseña encriptada con BCrypt
 
-    private String rol;        // Ejemplo: ADMIN, RECEPCIONISTA
+    @Column(nullable = false)
+    private String rol; // Ej: "ADMIN", "USER", "ENTRENADOR"
 
     public Usuario() {}
 
@@ -26,6 +27,7 @@ public class Usuario {
         this.rol = rol;
     }
 
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -37,4 +39,5 @@ public class Usuario {
 
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
+
 }
