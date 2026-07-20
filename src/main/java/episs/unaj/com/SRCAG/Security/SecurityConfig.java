@@ -17,20 +17,26 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                        .requestMatchers("/", "/home", "/membresia/**", "/persona/**").permitAll() // <-- Agregadas las rutas del Home
-                        // 3. Cualquier otra ruta que agregues en el futuro requerirá iniciar sesión
+                        .requestMatchers("/", "/home", "/login", "/membresia/**", "/persona/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                // 4. Configurar el formulario de Login por defecto de Spring Security
+                // Configurar el formulario de Login personalizado
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/membresia", true) // Redirigir aquí automáticamente al iniciar sesión
+                        .loginPage("/login")                           // Página de login personalizada
+                        .loginProcessingUrl("/login")                  // URL donde se procesa el login
+                        .defaultSuccessUrl("/membresia", true)         // Redirigir después del login exitoso
+                        .failureUrl("/login?error")                    // Redirigir si falla el login
+                        .usernameParameter("username")                 // Nombre del parámetro del usuario
+                        .passwordParameter("password")                 // Nombre del parámetro de contraseña
                         .permitAll()
                 )
-                // 5. Configurar el Logout (Cerrar sesión)
+                // Configurar el Logout
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutUrl("/logout")                          // URL para logout
+                        .logoutSuccessUrl("/login?logout")             // Redirigir después del logout
                         .permitAll()
-                );
+                )
+                .csrf().disable();  // Desactivar CSRF para pruebas (habilitar en producción)
 
         return http.build();
     }
