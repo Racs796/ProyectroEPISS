@@ -2,27 +2,214 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${titulo}">Registrar Membresía</title>
-    <!-- Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Registrar Membresía - SRCAG Gimnasio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --dark-color: #1a1a1a;
+            --accent-color: #00d4ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #2d2d2d 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary-color) !important;
+            letter-spacing: 2px;
+        }
+
+        .navbar-brand i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .form-body {
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #6c757d;
+            color: white;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        @media (max-width: 576px) {
+            .form-header {
+                padding: 1.5rem;
+            }
+
+            .form-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5" style="max-width: 650px;">
-    <div class="card shadow border-0">
-        <div class="card-header bg-success text-white p-3">
-            <h3 class="mb-0 h4 text-center" th:text="${titulo}">Registrar Nueva Membresía</h3>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <i class="bi bi-lightning-fill"></i>SRCAG GYM
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/home">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/persona">Socios</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/membresia">Membresías</a></li>
+            </ul>
         </div>
-        <div class="card-body p-4 bg-white rounded-bottom">
+    </div>
+</nav>
 
+<!-- FORM CONTAINER -->
+<div class="form-container">
+    <div class="form-card">
+        <!-- HEADER -->
+        <div class="form-header">
+            <h2><i class="bi bi-card-checklist"></i> <span th:text="${titulo}">Registrar Nueva Membresía</span></h2>
+        </div>
+
+        <!-- FORM BODY -->
+        <div class="form-body">
             <form th:action="@{/membresia/guardar}" th:object="${membresia}" method="post">
 
-                <!-- 1. Desplegable para asociar el Cliente/Persona -->
-                <div class="mb-3">
-                    <label for="persona" class="form-label fw-bold text-secondary">Asociar Cliente *</label>
+                <!-- CLIENTE -->
+                <div class="form-group">
+                    <label for="persona" class="form-label">
+                        <i class="bi bi-person-circle"></i> Asociar Cliente *
+                    </label>
                     <select th:field="*{persona}" class="form-select" id="persona" required>
                         <option value="" disabled selected>--- Seleccione un Socio ---</option>
-                        <!-- Recorremos la lista de personas inyectada por el controlador -->
                         <option th:each="p : ${personas}"
                                 th:value="${p.id}"
                                 th:text="${p.nombre + ' ' + p.apellido}">
@@ -30,10 +217,12 @@
                     </select>
                 </div>
 
+                <!-- TIPO Y PRECIO -->
                 <div class="row">
-                    <!-- 2. Tipo de Membresía -->
-                    <div class="col-md-6 mb-3">
-                        <label for="tipo" class="form-label fw-bold text-secondary">Tipo de Membresía</label>
+                    <div class="col-md-6 form-group">
+                        <label for="tipo" class="form-label">
+                            <i class="bi bi-bookmark"></i> Tipo de Membresía
+                        </label>
                         <select th:field="*{tipo}" class="form-select" id="tipo" required>
                             <option value="Mensual">Mensual</option>
                             <option value="Trimestral">Trimestral</option>
@@ -42,30 +231,39 @@
                         </select>
                     </div>
 
-                    <!-- 3. Precio -->
-                    <div class="col-md-6 mb-3">
-                        <label for="precio" class="form-label fw-bold text-secondary">Precio (S/)</label>
-                        <input type="number" step="0.01" th:field="*{precio}" class="form-control" id="precio" placeholder="100.00" required>
+                    <div class="col-md-6 form-group">
+                        <label for="precio" class="form-label">
+                            <i class="bi bi-currency-dollar"></i> Precio (S/)
+                        </label>
+                        <input type="number" step="0.01" th:field="*{precio}" class="form-control" 
+                               id="precio" placeholder="100.00" required>
                     </div>
                 </div>
 
+                <!-- FECHAS -->
                 <div class="row">
-                    <!-- 4. Fecha de Inicio -->
-                    <div class="col-md-6 mb-3">
-                        <label for="fechaInicio" class="form-label fw-bold text-secondary">Fecha de Inicio</label>
-                        <input type="date" th:field="*{fechaInicio}" class="form-control" id="fechaInicio" required>
+                    <div class="col-md-6 form-group">
+                        <label for="fechaInicio" class="form-label">
+                            <i class="bi bi-calendar-event"></i> Fecha de Inicio
+                        </label>
+                        <input type="date" th:field="*{fechaInicio}" class="form-control" 
+                               id="fechaInicio" required>
                     </div>
 
-                    <!-- 5. Fecha de Vencimiento -->
-                    <div class="col-md-6 mb-3">
-                        <label for="fechaFin" class="form-label fw-bold text-secondary">Fecha de Vencimiento</label>
-                        <input type="date" th:field="*{fechaFin}" class="form-control" id="fechaFin" required>
+                    <div class="col-md-6 form-group">
+                        <label for="fechaFin" class="form-label">
+                            <i class="bi bi-calendar-x"></i> Fecha de Vencimiento
+                        </label>
+                        <input type="date" th:field="*{fechaFin}" class="form-control" 
+                               id="fechaFin" required>
                     </div>
                 </div>
 
-                <!-- 6. Estado de la Membresía -->
-                <div class="mb-3">
-                    <label for="estado" class="form-label fw-bold text-secondary">Estado</label>
+                <!-- ESTADO -->
+                <div class="form-group">
+                    <label for="estado" class="form-label">
+                        <i class="bi bi-shield-check"></i> Estado
+                    </label>
                     <select th:field="*{estado}" class="form-select" id="estado" required>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
@@ -73,13 +271,16 @@
                     </select>
                 </div>
 
-                <!-- Botones de Acción -->
-                <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="/membresia" class="btn btn-secondary px-4">Cancelar</a>
-                    <button type="submit" class="btn btn-success px-4">Guardar Membresía</button>
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <a href="/membresia" class="btn-cancel">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-circle"></i> Guardar Membresía
+                    </button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

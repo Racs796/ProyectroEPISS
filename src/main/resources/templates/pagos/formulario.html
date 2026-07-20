@@ -2,65 +2,298 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Pago</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pago - SRCAG Gimnasio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --dark-color: #1a1a1a;
+            --accent-color: #00d4ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #2d2d2d 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary-color) !important;
+            letter-spacing: 2px;
+        }
+
+        .navbar-brand i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .form-body {
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #6c757d;
+            color: white;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        @media (max-width: 576px) {
+            .form-header {
+                padding: 1.5rem;
+            }
+
+            .form-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h2>Registro de Pago</h2>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <i class="bi bi-lightning-fill"></i>SRCAG GYM
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/home">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/persona">Socios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/membresia">Membresías</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/pago/lista">Pagos</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<form th:action="@{/pago/guardar}" th:object="${pago}" method="post">
+<!-- FORM CONTAINER -->
+<div class="form-container">
+    <div class="form-card">
+        <!-- HEADER -->
+        <div class="form-header">
+            <h2><i class="bi bi-cash-coin"></i> Registrar Nuevo Pago</h2>
+        </div>
 
-    <input type="hidden" th:field="*{id}">
+        <!-- FORM BODY -->
+        <div class="form-body">
+            <form th:action="@{/pago/guardar}" th:object="${pago}" method="post">
 
-    <label>Membresía:</label><br>
-    <select th:field="*{membresia}" required>
-        <option value="">Seleccione una membresía</option>
-        <option th:each="m : ${membresias}"
-                th:value="${m.id}"
-                th:text="${m.tipo}">
-        </option>
-    </select>
+                <input type="hidden" th:field="*{id}">
 
-    <br><br>
+                <!-- MEMBRESÍA -->
+                <div class="form-group">
+                    <label for="membresia" class="form-label">
+                        <i class="bi bi-card-checklist"></i> Membresía *
+                    </label>
+                    <select th:field="*{membresia}" class="form-select" id="membresia" required>
+                        <option value="" disabled selected>--- Seleccione una Membresía ---</option>
+                        <option th:each="m : ${membresias}"
+                                th:value="${m.id}"
+                                th:text="${m.tipo}">
+                        </option>
+                    </select>
+                </div>
 
-    <label>Monto:</label><br>
-    <input type="number" step="0.01" th:field="*{monto}" required>
+                <!-- MONTO Y FORMA PAGO -->
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="monto" class="form-label">
+                            <i class="bi bi-currency-dollar"></i> Monto (S/)
+                        </label>
+                        <input type="number" step="0.01" th:field="*{monto}" class="form-control" 
+                               id="monto" placeholder="150.00" required>
+                    </div>
 
-    <br><br>
+                    <div class="col-md-6 form-group">
+                        <label for="formaPago" class="form-label">
+                            <i class="bi bi-wallet2"></i> Forma de Pago
+                        </label>
+                        <select th:field="*{formaPago}" class="form-select" id="formaPago" required>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Transferencia">Transferencia</option>
+                            <option value="Yape">Yape</option>
+                            <option value="Plin">Plin</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+                </div>
 
-    <label>Forma de Pago:</label><br>
-    <select th:field="*{formaPago}">
-        <option value="Efectivo">Efectivo</option>
-        <option value="Yape">Yape</option>
-        <option value="Plin">Plin</option>
-        <option value="Tarjeta">Tarjeta</option>
-        <option value="Transferencia">Transferencia</option>
-    </select>
+                <!-- FECHA Y ESTADO -->
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="fechaPago" class="form-label">
+                            <i class="bi bi-calendar-event"></i> Fecha de Pago
+                        </label>
+                        <input type="date" th:field="*{fechaPago}" class="form-control" 
+                               id="fechaPago" required>
+                    </div>
 
-    <br><br>
+                    <div class="col-md-6 form-group">
+                        <label for="estado" class="form-label">
+                            <i class="bi bi-shield-check"></i> Estado
+                        </label>
+                        <select th:field="*{estado}" class="form-select" id="estado" required>
+                            <option value="Pagado">Pagado</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Anulado">Anulado</option>
+                        </select>
+                    </div>
+                </div>
 
-    <label>Fecha de Pago:</label><br>
-    <input type="date" th:field="*{fechaPago}" required>
+                <!-- DESCRIPCIÓN -->
+                <div class="form-group">
+                    <label for="descripcion" class="form-label">
+                        <i class="bi bi-chat-left-text"></i> Descripción
+                    </label>
+                    <textarea th:field="*{descripcion}" class="form-control" id="descripcion" 
+                              placeholder="Detalles adicionales del pago..."></textarea>
+                </div>
 
-    <br><br>
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <a href="/pago/lista" class="btn-cancel">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-circle"></i> Guardar Pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    <label>Estado:</label><br>
-    <select th:field="*{estado}">
-        <option value="Pagado">Pagado</option>
-        <option value="Pendiente">Pendiente</option>
-        <option value="Anulado">Anulado</option>
-    </select>
-
-    <br><br>
-
-    <label>Descripción:</label><br>
-    <textarea th:field="*{descripcion}"></textarea>
-
-    <br><br>
-
-    <button type="submit">Guardar</button>
-
-</form>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
