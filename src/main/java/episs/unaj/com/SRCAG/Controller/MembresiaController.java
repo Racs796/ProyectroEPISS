@@ -18,53 +18,30 @@ public class MembresiaController {
     @Autowired
     private PersonaService personaService;
 
-    // 1. Listar todas las membresías
+    // Listar todas las membresías
     @GetMapping
     public String listarMembresias(Model model) {
         model.addAttribute("titulo", "Listado de Membresías");
-        model.addAttribute("membresias", membresiaService.listarTodas()); // <-- OK
-        return "membresia/listar";
+        model.addAttribute("membresias", membresiaService.listarTodas());
+        return "membresia/Listar"; // Apunta a templates/membresia/Listar.html
     }
 
-    // 2. Mostrar formulario para registrar nueva Membresía
+    // Mostrar formulario para registrar una nueva membresía
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        Membresia membresia = new Membresia();
         model.addAttribute("titulo", "Registrar Nueva Membresía");
-        model.addAttribute("membresia", membresia);
+        model.addAttribute("membresia", new Membresia());
+
+        // Enviamos la lista completa de socios para llenar el menú desplegable del HTML
         model.addAttribute("personas", personaService.listarTodas());
-        return "membresia/formulario";
+
+        return "membresia/formulario"; // Apunta a templates/membresia/formulario.html
     }
 
-    // 3. Guardar o actualizar la Membresía
+    // Procesar y guardar la membresía
     @PostMapping("/guardar")
-    public String guardarMembresia(@ModelAttribute Membresia membresia) {
-        membresiaService.guardar(membresia); // <-- OK
-        return "redirect:/membresia";
-    }
-
-    // 4. Mostrar formulario para editar
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
-        try {
-            Membresia membresia = membresiaService.obtenerPorId(id); // <-- OK
-            model.addAttribute("titulo", "Editar Membresía");
-            model.addAttribute("membresia", membresia);
-            model.addAttribute("personas", personaService.listarTodas());
-            return "membresia/formulario";
-        } catch (RuntimeException e) {
-            return "redirect:/membresia";
-        }
-    }
-
-    // 5. Eliminar una Membresía
-    @GetMapping("/eliminar/{id}")
-    public String eliminarMembresia(@PathVariable("id") Long id) {
-        try {
-            membresiaService.eliminar(id); // <-- OK
-        } catch (RuntimeException e) {
-            // Manejo silencioso
-        }
+    public String guardarMembresia(@ModelAttribute("membresia") Membresia membresia) {
+        membresiaService.guardar(membresia);
         return "redirect:/membresia";
     }
 }

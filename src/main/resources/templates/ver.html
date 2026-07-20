@@ -2,71 +2,395 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Pago</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Pago - SRCAG Gimnasio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-        body{
-            font-family: Arial, sans-serif;
-            background:#f4f4f4;
-            margin:0;
-            padding:30px;
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --dark-color: #1a1a1a;
+            --accent-color: #00d4ff;
         }
 
-        .container{
-            width:600px;
-            margin:auto;
-            background:white;
-            padding:25px;
-            border-radius:10px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.2);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h2{
-            text-align:center;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
         }
 
-        p{
-            font-size:18px;
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #2d2d2d 100%);
+            padding: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        strong{
-            color:#007bff;
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary-color) !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        a{
-            display:inline-block;
-            margin-top:20px;
-            padding:10px 20px;
-            background:#007bff;
-            color:white;
-            text-decoration:none;
-            border-radius:5px;
+        .navbar-brand i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .detail-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .detail-header h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .detail-body {
+            padding: 2.5rem;
+        }
+
+        .info-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .info-value.highlight {
+            color: var(--primary-color);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .description-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .description-box p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .btn-custom {
+            padding: 0.9rem 1.8rem;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-back {
+            background: var(--dark-color);
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            color: white;
+        }
+
+        .btn-edit {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+            color: white;
+        }
+
+        .btn-print {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #00bfff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 576px) {
+            .detail-body {
+                padding: 1.5rem;
+            }
+
+            .info-group {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-custom {
+                flex: none;
+                width: 100%;
+            }
+
+            .detail-header h2 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <i class="bi bi-lightning-fill"></i>SRCAG GYM
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pago/lista">Pagos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/persona">Socios</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <h2>Detalle del Pago</h2>
+<!-- ===== DETAIL SECTION ===== -->
+<div class="detail-container">
+    <div class="detail-card">
+        <!-- Header -->
+        <div class="detail-header">
+            <h2><i class="bi bi-receipt"></i> Detalle del Pago</h2>
+            <p>Información completa de la transacción</p>
+        </div>
 
-    <p><strong>ID:</strong> <span th:text="${pago.id}"></span></p>
+        <!-- Body -->
+        <div class="detail-body">
+            <!-- Main Info -->
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-hash"></i> ID Pago</div>
+                    <div class="info-value" th:text="${pago.id}">001</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-card-checklist"></i> Membresía</div>
+                    <div class="info-value" th:text="${pago.membresia.tipo}">Mensual</div>
+                </div>
+            </div>
 
-    <p><strong>Membresía:</strong> <span th:text="${pago.membresia.tipo}"></span></p>
+            <!-- Amount and Status -->
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-currency-dollar"></i> Monto</div>
+                    <div class="info-value highlight">
+                        S/ <span th:text="${pago.monto}">0.00</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-shield-check"></i> Estado</div>
+                    <div>
+                        <span class="status-badge" 
+                              th:classappend="${pago.estado == 'Pagado' ? 'success' : pago.estado == 'Pendiente' ? 'pending' : 'failed'}"
+                              th:text="${pago.estado}">
+                            Pendiente
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-    <p><strong>Monto:</strong> S/ <span th:text="${pago.monto}"></span></p>
+            <!-- Payment Details -->
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-credit-card"></i> Forma de Pago</div>
+                    <div class="info-value" th:text="${pago.formaPago}">Efectivo</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-calendar-event"></i> Fecha</div>
+                    <div class="info-value" th:text="${pago.fechaPago}">2026-01-01</div>
+                </div>
+            </div>
 
-    <p><strong>Forma de Pago:</strong> <span th:text="${pago.formaPago}"></span></p>
+            <!-- Description -->
+            <div class="description-box">
+                <div class="info-label mb-2"><i class="bi bi-chat-left-text"></i> Descripción</div>
+                <p th:text="${pago.descripcion}">No hay descripción disponible</p>
+            </div>
 
-    <p><strong>Fecha:</strong> <span th:text="${pago.fechaPago}"></span></p>
+            <!-- Client Info -->
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-person-circle"></i> Cliente</div>
+                    <div class="info-value">
+                        <span th:text="${pago.membresia.persona.nombre + ' ' + pago.membresia.persona.apellido}">
+                            Nombre del Cliente
+                        </span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label"><i class="bi bi-telephone"></i> Contacto</div>
+                    <div class="info-value" th:text="${pago.membresia.persona.telefono}">+51 000000000</div>
+                </div>
+            </div>
 
-    <p><strong>Estado:</strong> <span th:text="${pago.estado}"></span></p>
-
-    <p><strong>Descripción:</strong> <span th:text="${pago.descripcion}"></span></p>
-
-    <a th:href="@{/pago/lista}">Volver</a>
-
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a th:href="@{/pago/lista}" class="btn btn-custom btn-back">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+                <a th:href="@{/pago/editar/{id}(id=${pago.id})}" class="btn btn-custom btn-edit">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+                <button class="btn btn-custom btn-print" onclick="window.print()">
+                    <i class="bi bi-printer"></i> Imprimir
+                </button>
+                <a th:href="@{/pago/eliminar/{id}(id=${pago.id})}" 
+                   class="btn btn-custom btn-delete"
+                   onclick="return confirm('¿Estás seguro de que deseas eliminar este pago?')">
+                    <i class="bi bi-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

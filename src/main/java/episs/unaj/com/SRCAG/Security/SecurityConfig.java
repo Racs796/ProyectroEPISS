@@ -1,4 +1,4 @@
-package episs.unaj.com.SRCAG.Security; // <-- Deja tu paquete tal cual
+package episs.unaj.com.SRCAG.Security; // <-- Asegúrate de que coincida con tu estructura de paquetes
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,20 +16,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Permitir que cualquiera entre a las vistas de membresía temporalmente para probar
-                        .requestMatchers("/membresia/**").permitAll()
-
-                        // Permitir recursos estáticos
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-
-                        // Cualquier otra petición requiere autenticación
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/", "/home", "/membresia/**", "/persona/**").permitAll() // <-- Agregadas las rutas del Home
+                        // 3. Cualquier otra ruta que agregues en el futuro requerirá iniciar sesión
                         .anyRequest().authenticated()
                 )
+                // 4. Configurar el formulario de Login por defecto de Spring Security
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/membresia", true)
+                        .defaultSuccessUrl("/membresia", true) // Redirigir aquí automáticamente al iniciar sesión
                         .permitAll()
                 )
-                .logout(logout -> logout.permitAll());
+                // 5. Configurar el Logout (Cerrar sesión)
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
 
         return http.build();
     }

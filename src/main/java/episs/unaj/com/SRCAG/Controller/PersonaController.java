@@ -1,4 +1,4 @@
-package episs.unaj.com.SRCAG.Controller; // <-- Con 'C' mayúscula
+package episs.unaj.com.SRCAG.Controller; // Asegúrate de que apunte a tu paquete de controladores
 
 import episs.unaj.com.SRCAG.Entity.Persona;
 import episs.unaj.com.SRCAG.Service.PersonaService;
@@ -8,57 +8,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/persona") // Ruta en el navegador: http://localhost:8080/persona
+@RequestMapping("/persona")
 public class PersonaController {
 
     @Autowired
-    private PersonaService personaService; // El controlador llama al Servicio, y este al Repositorio
+    private PersonaService personaService;
 
-    // 1. Listar todas las personas (Estilo del profesor)
+    // Listar todos los socios
     @GetMapping
     public String listarPersonas(Model model) {
-        model.addAttribute("titulo", "Listado de Clientes / Personas");
+        model.addAttribute("titulo", "Listado de Socios");
+        // Usamos listarTodas() que es como está en tu interfaz en la imagen
         model.addAttribute("personas", personaService.listarTodas());
-        return "persona/listar"; // Redirecciona al HTML: templates/persona/listar.html
+        return "persona/listar"; // Apunta a templates/persona/listar.html
     }
 
-    // 2. Mostrar formulario para registrar una nueva Persona
+    // Mostrar formulario de registro
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        Persona persona = new Persona(); // Se crea un objeto vacío que se llenará con los datos del formulario
-        model.addAttribute("titulo", "Registrar Nueva Persona");
-        model.addAttribute("persona", persona);
-        return "persona/formulario"; // Redirecciona al HTML: templates/persona/formulario.html
+        model.addAttribute("titulo", "Registrar Nuevo Socio");
+        model.addAttribute("persona", new Persona());
+        return "persona/formulario"; // Apunta a templates/persona/formulario.html
     }
 
-    // 3. Guardar o actualizar la Persona (Procesa los datos enviados desde el formulario)
+    // Guardar el socio en la base de datos
     @PostMapping("/guardar")
-    public String guardarPersona(@ModelAttribute Persona persona) {
+    public String guardarPersona(@ModelAttribute("persona") Persona persona) {
         personaService.guardar(persona);
-        return "redirect:/persona"; // Vuelve a recargar la lista de personas tras guardar
-    }
-
-    // 4. Mostrar formulario para editar una Persona existente
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
-        try {
-            Persona persona = personaService.obtenerPorId(id);
-            model.addAttribute("titulo", "Editar Datos de Persona");
-            model.addAttribute("persona", persona);
-            return "persona/formulario"; // Reutiliza el mismo formulario de creación
-        } catch (RuntimeException e) {
-            return "redirect:/persona"; // Si hay error o no se encuentra, vuelve a la lista
-        }
-    }
-
-    // 5. Eliminar una Persona de la Base de Datos
-    @GetMapping("/eliminar/{id}")
-    public String eliminarPersona(@PathVariable("id") Long id) {
-        try {
-            personaService.eliminar(id);
-        } catch (RuntimeException e) {
-            // Manejo de errores silencioso como suele estructurar el profesor
-        }
-        return "redirect:/persona"; // Redirecciona a la lista actualizándose
+        return "redirect:/persona"; // Redirige al listado tras salvar
     }
 }
